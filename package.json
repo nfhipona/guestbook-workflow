@@ -1,0 +1,33 @@
+{
+  "name": "guestbook-workflow",
+  "version": "1.0.0",
+  "description": "Allows you to use your repo issues as your guest book entries and show it on your github profile or project readme",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild ./src/index.js  --bundle --platform=node --outfile=dist/index.js"
+  },
+  "author": "Neil Francis Ramirez Hipona",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nfhipona/guestbook-workflow.git"
+  },
+  "keywords": [
+    "guestbook",
+    "issues",
+    "github",
+    "issues",
+    "guest",
+    "comments"
+  ],
+  "bugs": {
+    "url": "https://github.com/nfhipona/guestbook-workflow/issues"
+  },
+  "homepage": "https://github.com/nfhipona/guestbook-workflow#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "esbuild": "^0.18.13",
+    "keepalive-workflow": "^1.1.0",
+    "process": "^0.11.10"
+  }
+}
