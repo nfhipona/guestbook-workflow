@@ -1,0 +1,35 @@
+name: 'Guestbook Workflow'
+author: 'Neil Francis Hipona'
+description: 'Allows you to use your repo issues as your guest book entries and show it on your github profile or project readme'
+
+inputs:
+  gh_token:
+    description: 'GitHub access token with Repo scope'
+    default: ${{ github.token }}
+    required: false
+  readme_path:
+    description: 'Comma separated paths of the readme files you want to update'
+    default: './README.md'
+    required: false
+  max_display_count:
+    description: 'Maximum number of entries you want to show on your readme'
+    default: '10'
+    required: false
+  committer_username:
+    description: "Username used while committing to the repo"
+    default: "guestbook-bot"
+    required: false
+  committer_email:
+    description: "Email id used while committing to the repo"
+    default: "guestbook-bot@example.com"
+    required: false
+  commit_message:
+    description: "Commit message used while committing to the repo"
+    default: "Updated with the latest guest post entries"
+    required: false
+runs:
+  using: node16
+  main: dist/index.js
+branding:
+  icon: 'activity'
+  color: 'blue'
