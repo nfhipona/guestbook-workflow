@@ -8930,7 +8930,12 @@ var require_issue = __commonJS({
 // src/components/graphql_query.js
 var require_graphql_query = __commonJS({
   "src/components/graphql_query.js"(exports, module2) {
-    var { octokit, owner: owner2, repo: repo2 } = require_constants();
+    var {
+      MAX_DISPLAY_COUNT: MAX_DISPLAY_COUNT2,
+      octokit,
+      owner: owner2,
+      repo: repo2
+    } = require_constants();
     var Issue = require_issue();
     async function runQuery2() {
       const queryStr = `
@@ -8955,7 +8960,8 @@ var require_graphql_query = __commonJS({
     `;
       const params = {
         owner: owner2,
-        repo: repo2
+        repo: repo2,
+        num: MAX_DISPLAY_COUNT2
       };
       const { repository } = await octokit.graphql(queryStr, params);
       const issues = repository.issues.edges.map((issue) => {
@@ -9008,9 +9014,8 @@ function constructGuestbook(issues = []) {
   if (issues.length === 0) {
     return EMPTY_TEMPLATE.replace("$username", owner).replace("$repo", repo).replace("$identifier", ENTRY_IDENTIFIER);
   }
-  const guestComments = issues.slice(0, Math.min(MAX_DISPLAY_COUNT, issues.length));
-  const guestbookAvatars = guestComments.map((item) => item.avatarString()).join(" ");
-  const guestbookComments = guestComments.map((item) => item.toEntryString(
+  const guestbookAvatars = issues.map((item) => item.avatarString()).join(" ");
+  const guestbookComments = issues.map((item) => item.toEntryString(
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
