@@ -26,8 +26,10 @@
   "homepage": "https://github.com/nfhipona/guestbook-workflow#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
     "esbuild": "^0.18.13",
     "keepalive-workflow": "^1.1.0",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "readme-box": "^1.0.0"
   }
 }
