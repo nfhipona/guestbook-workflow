@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Update guestbook
-        uses: nfhipona/guestbook-workflow@master
+        uses: nfhipona/guestbook-workflow@main
         with:
           max_entries: 10
           target_branch: 'main'
