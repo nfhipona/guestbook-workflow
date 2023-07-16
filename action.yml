@@ -9,11 +9,11 @@ inputs:
     required: false
   max_display_count:
     description: 'Maximum number of entries you want to show on your readme'
-    default: '10'
+    default: 10
     required: false
   max_character_count:
     description: 'Maximum number of entries you want to show on your readme'
-    default: '150'
+    default: 150
     required: false
   committer_username:
     description: 'Username used while committing to the repo'
@@ -33,11 +33,11 @@ inputs:
     required: false
   max_retry_count:
     description: 'Maximum number of times to retry the fetch operation if it fails'
-    default: '3'
+    default: 3
     required: false
   retry_wait_time:
     description: 'Time to wait before each retry operation in seconds'
-    default: '1'
+    default: 1
     required: false
   entry_identifier:
     description: 'Guestbook title prefix identifier. GUEST_BOOK_ENTRY'
