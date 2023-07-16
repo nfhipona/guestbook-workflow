@@ -1,5 +1,5 @@
 # guestbook-workflow
-Show guestbook with issues entries
+Allows you to use your repo issues as your guestbook entries and show it on your github profile or project's *readme*.
 
 
 ## Usage
