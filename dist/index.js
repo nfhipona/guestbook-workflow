@@ -8852,7 +8852,7 @@ var require_constants = __commonJS({
     var core = require_core();
     var github = require_github();
     var GITHUB_TOKEN2 = core.getInput("gh_token");
-    var MAX_DISPLAY_COUNT2 = core.getInput("max_display_count");
+    var MAX_DISPLAY_COUNT = core.getInput("max_display_count");
     var MAX_CHARACTER_COUNT2 = core.getInput("max_character_count");
     var COMMITTER_USERNAME = core.getInput("committer_username");
     var COMMITTER_EMAIL = core.getInput("committer_email");
@@ -8871,7 +8871,7 @@ var require_constants = __commonJS({
     var { owner: owner2, repo: repo2 } = github.context.repo;
     module2.exports = {
       GITHUB_TOKEN: GITHUB_TOKEN2,
-      MAX_DISPLAY_COUNT: MAX_DISPLAY_COUNT2,
+      MAX_DISPLAY_COUNT,
       MAX_CHARACTER_COUNT: MAX_CHARACTER_COUNT2,
       COMMITTER_USERNAME,
       COMMITTER_EMAIL,
@@ -8931,7 +8931,7 @@ var require_issue = __commonJS({
 var require_graphql_query = __commonJS({
   "src/components/graphql_query.js"(exports, module2) {
     var {
-      MAX_DISPLAY_COUNT: MAX_DISPLAY_COUNT2,
+      MAX_DISPLAY_COUNT,
       octokit,
       owner: owner2,
       repo: repo2
@@ -8961,7 +8961,7 @@ var require_graphql_query = __commonJS({
       const params = {
         owner: owner2,
         repo: repo2,
-        num: MAX_DISPLAY_COUNT2
+        num: Number(MAX_DISPLAY_COUNT) || 0
       };
       const { repository } = await octokit.graphql(queryStr, params);
       const issues = repository.issues.edges.map((issue) => {
@@ -8988,7 +8988,7 @@ var {
   GITHUB_TOKEN,
   TARGET_BRANCH,
   ENABLE_KEEP_ALIVE,
-  MAX_DISPLAY_COUNT,
+  MAX_CHARACTER_COUNT,
   ENTRY_IDENTIFIER,
   ENTRY_IDENTIFIER_DELIMITER,
   SECTION_IDENTIFIER,
@@ -8998,7 +8998,6 @@ var {
   owner,
   repo
 } = require_constants();
-var { MAX_CHARACTER_COUNT } = require_constants();
 async function updateReadme(content) {
   return await ReadmeBox.updateSection(content, {
     owner,
@@ -9019,7 +9018,7 @@ function constructGuestbook(issues = []) {
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
-    MAX_CHARACTER_COUNT
+    Number(MAX_CHARACTER_COUNT) || 0
   )).join(" ");
   const newEntryLink = COMMENT_LINK_TEMPLATE.replace("$username", owner).replace("$repo", repo).replace("$identifier", ENTRY_IDENTIFIER);
   return `
