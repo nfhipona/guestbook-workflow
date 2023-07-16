@@ -1,7 +1,12 @@
 // https://docs.github.com/en/graphql/guides/forming-calls-with-graphql
 // https://docs.github.com/en/graphql/overview/explorer
 
-const { octokit, owner, repo } = require("./constants");
+const { 
+    MAX_DISPLAY_COUNT, 
+    octokit, 
+    owner, 
+    repo 
+} = require("./constants");
 const Issue = require('./issue');
 
 async function runQuery() {
@@ -28,7 +33,8 @@ async function runQuery() {
     
     const params = {
         owner: owner,
-        repo: repo
+        repo: repo,
+        num: MAX_DISPLAY_COUNT
     };
     
     const { repository } = await octokit.graphql(queryStr, params);

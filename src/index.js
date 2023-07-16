@@ -36,12 +36,11 @@ function constructGuestbook(issues = []) {
             .replace('$identifier', ENTRY_IDENTIFIER);
     }
 
-    const guestComments = issues.slice(0, Math.min(MAX_DISPLAY_COUNT, issues.length));
-    const guestbookAvatars = guestComments
+    const guestbookAvatars = issues
         .map(item => item.avatarString())
         .join(' ');
 
-    const guestbookComments = guestComments
+    const guestbookComments = issues
         .map(item => item.toEntryString(
                 ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, MAX_CHARACTER_COUNT
             ))
