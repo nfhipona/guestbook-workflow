@@ -19,3 +19,4 @@ jobs:
         uses: nfhipona/guestbook-workflow@main
         with:
           target_branch: 'main'
+          section_identifier: 'guestbook-section'
