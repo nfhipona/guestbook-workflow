@@ -29,18 +29,19 @@ async function updateReadme(content) {
 }
 
 function constructGuestbook(issues = []) {
-    if (issues.length === 0) {
+    const comments = issues.map(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+    if (comments.length === 0) {
         return EMPTY_TEMPLATE
             .replaceAll('$username', owner)
             .replaceAll('$repo', repo)
             .replaceAll('$identifier', ENTRY_IDENTIFIER);
     }
 
-    const guestbookAvatars = issues
+    const guestbookAvatars = comments
         .map(item => item.avatarString())
         .join(' ');
 
-    const guestbookComments = issues
+    const guestbookComments = comments
         .map(item => item.toEntryString(
                 ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, COMMENT_EMPTY_TITLE_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
             ))
