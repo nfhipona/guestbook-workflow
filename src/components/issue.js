@@ -41,7 +41,8 @@ class Issue {
         const titleExp = new RegExp(`^([${identifier}]+.+[${delimiter}])`, 'g');
         const trimExp = new RegExp(`^\s+|\s+$`, 'gm');
         const titleContent = this.title.replace(titleExp, '');
-        return titleContent.replaceAll(trimExp, '');
+        const cleaned = titleContent.replaceAll(trimExp, '');
+        return cleaned === identifier ? '' : cleaned;
     }
 }
 
