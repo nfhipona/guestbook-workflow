@@ -18,5 +18,4 @@ jobs:
       - name: Update guestbook
         uses: nfhipona/guestbook-workflow@main
         with:
-          max_entries: 10
           target_branch: 'main'
