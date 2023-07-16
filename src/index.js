@@ -14,7 +14,7 @@ const {
     EMPTY_TEMPLATE,
     owner, 
     repo
-} = require("./constants");
+} = require('./components/constants');
 const { MAX_CHARACTER_COUNT } = require('./components/constants');
 
 async function updateReadme(content) {
