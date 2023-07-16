@@ -16,56 +16,56 @@ inputs:
     default: '150'
     required: false
   committer_username:
-    description: "Username used while committing to the repo"
-    default: "guestbook-bot"
+    description: 'Username used while committing to the repo'
+    default: 'guestbook-bot'
     required: false
   committer_email:
-    description: "Email id used while committing to the repo"
-    default: "guestbook-bot@example.com"
+    description: 'Email id used while committing to the repo'
+    default: 'guestbook-bot@example.com'
     required: false
   commit_message:
-    description: "Commit message used while committing to the repo"
-    default: "Updated with the latest guest post entries"
+    description: 'Commit message used while committing to the repo'
+    default: 'Updated with the latest guest post entries'
     required: false
   enable_keepalive:
-    description: "Enables the feature that keeps the repo active by automatically committing to it even though there is no change"
-    default: "true"
+    description: 'Enables the feature that keeps the repo active by automatically committing to it even though there is no change'
+    default: 'true'
     required: false
   max_retry_count:
-    description: "Maximum number of times to retry the fetch operation if it fails"
-    default: "3"
+    description: 'Maximum number of times to retry the fetch operation if it fails'
+    default: '3'
     required: false
   retry_wait_time:
-    description: "Time to wait before each retry operation in seconds"
-    default: "1"
+    description: 'Time to wait before each retry operation in seconds'
+    default: '1'
     required: false
   entry_identifier:
-    description: "Guestbook title prefix identifier. GUEST_BOOK_ENTRY"
-    default: "GUEST_BOOK_ENTRY"
+    description: 'Guestbook title prefix identifier. GUEST_BOOK_ENTRY'
+    default: 'GUEST_BOOK_ENTRY'
     required: false
   entry_identifier_delimiter:
-    description: "Guestbook title prefix identifier delimiter to separate entry title. GUEST_BOOK_ENTRY: user's title content"
-    default: ":"
+    description: 'Guestbook title prefix identifier delimiter to separate entry title. GUEST_BOOK_ENTRY: user`s title content'
+    default: ':'
     required: false
   comment_template:
-    description: "Template format to display guests comments. variables: $username", $profile, $date, $title, $content"
-    default: "* **[$username]($profile) *wrote on $date*:** $title: $content"
+    description: 'Template format to display guests comments. variables: $username, $profile, $date, $title, $content'
+    default: '* **[$username]($profile) *wrote on $date*:** $title: $content'
     required: false
   comment_link_template:
-    description: "Template format to display link to guestbook"
-    default: "Do you like my project or just want to say hi? Feel free to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to my guestbook!"
+    description: 'Template format to display link to guestbook'
+    default: 'Do you like my project or just want to say hi? Feel free to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to my guestbook!'
     required: false
   empty_template:
-    description: "Template format to display when guestbook is empty. variables: $username", $repo, $identifier"
-    default: "Nothing here, yet. Be the first to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to $username's guestbook!"
+    description: 'Template format to display when guestbook is empty. variables: $username, $repo, $identifier'
+    default: 'Nothing here, yet. Be the first to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to $username`s guestbook!'
     required: false
   target_branch:
-    description: "The target branch to work on. default to main"
-    default: "main"
+    description: 'The target branch to work on. default to main'
+    default: 'main'
     required: false
   section_identifier:
-    description: "The section identifier in readme file"
-    default: "guestbook"
+    description: 'The section identifier in readme file'
+    default: 'guestbook'
     required: false
 
 runs:
