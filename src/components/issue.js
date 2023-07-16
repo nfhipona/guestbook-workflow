@@ -13,11 +13,11 @@ class Issue {
         const contents = this.bodyText.slice(0, charCount);
 
         return template
-            .replace('$username', this.author)
-            .replace('$profile', this.profile)
-            .replace('$date', this.createdAt)
-            .replace('$title', this.getTitle(identifier, delimiter))
-            .replace('$content', contents);
+            .replaceAll('$username', this.author)
+            .replaceAll('$profile', this.profile)
+            .replaceAll('$date', this.createdAt)
+            .replaceAll('$title', this.getTitle(identifier, delimiter))
+            .replaceAll('$content', contents);
     }
 
     avatarString() {
@@ -31,7 +31,7 @@ class Issue {
     getTitle(identifier, delimiter) {
         const titleExp = new RegExp(`^([${identifier}]+.+[${delimiter}])`, 'g');
         const trimExp = new RegExp(`^\s+|\s+$`, 'g');
-        const titleContent = this.title.replace(titleExp);
+        const titleContent = this.title.replace(titleExp, '');
         return titleContent.replace(trimExp, '');
     }
 }

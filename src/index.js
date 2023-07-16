@@ -30,9 +30,9 @@ async function updateReadme(content) {
 function constructGuestbook(issues = []) {
     if (issues.length === 0) {
         return EMPTY_TEMPLATE
-            .replace('$username', owner)
-            .replace('$repo', repo)
-            .replace('$identifier', ENTRY_IDENTIFIER);
+            .replaceAll('$username', owner)
+            .replaceAll('$repo', repo)
+            .replaceAll('$identifier', ENTRY_IDENTIFIER);
     }
 
     const guestbookAvatars = issues
@@ -46,9 +46,9 @@ function constructGuestbook(issues = []) {
         .join(' ');
 
     const newEntryLink = COMMENT_LINK_TEMPLATE
-        .replace('$username', owner)
-        .replace('$repo', repo)
-        .replace('$identifier', ENTRY_IDENTIFIER);
+        .replaceAll('$username', owner)
+        .replaceAll('$repo', repo)
+        .replaceAll('$identifier', ENTRY_IDENTIFIER);
 
     return `
         ${guestbookAvatars}\n\n
