@@ -1,5 +1,6 @@
 // Octokit.js
 // https://github.com/octokit/core.js#readme
+// https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#list-repository-issues
 
 const { octokit, owner, repo } = require("./constants");
 const Issue = require('./issue');
