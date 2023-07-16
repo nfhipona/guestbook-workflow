@@ -9004,7 +9004,7 @@ async function updateReadme(content) {
     // set to `true` to allow empty commits when there are no changes
   });
 }
-function constructGuestbook(issues) {
+function constructGuestbook(issues = []) {
   if (issues.length === 0) {
     return EMPTY_TEMPLATE.replace("$username", owner).replace("$repo", repo).replace("$identifier", ENTRY_IDENTIFIER);
   }
