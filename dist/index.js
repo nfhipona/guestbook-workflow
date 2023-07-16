@@ -9018,11 +9018,12 @@ async function updateReadme(content) {
   });
 }
 function constructGuestbook(issues = []) {
-  if (issues.length === 0) {
+  const comments = issues.map((issue) => issue.isGuestEntry(ENTRY_IDENTIFIER));
+  if (comments.length === 0) {
     return EMPTY_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER);
   }
-  const guestbookAvatars = issues.map((item) => item.avatarString()).join(" ");
-  const guestbookComments = issues.map((item) => item.toEntryString(
+  const guestbookAvatars = comments.map((item) => item.avatarString()).join(" ");
+  const guestbookComments = comments.map((item) => item.toEntryString(
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
