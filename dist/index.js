@@ -9021,15 +9021,11 @@ function constructGuestbook(issues = []) {
     Number(MAX_CHARACTER_COUNT) || 0
   )).join(" ");
   const newEntryLink = COMMENT_LINK_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER);
-  return `
-        ${guestbookAvatars}
+  return `${guestbookAvatars}
 
+${guestbookComments}
 
-        ${guestbookComments}
-
-
-        ${newEntryLink}
-    `;
+${newEntryLink}`;
 }
 async function runWorkflow() {
   const issues = await runQuery();
