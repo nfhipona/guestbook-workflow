@@ -8917,7 +8917,7 @@ var require_issue = __commonJS({
         return template.replaceAll("$username", this.author).replaceAll("$profile", this.profile).replaceAll("$date", this.createdAt).replaceAll("$title", this.getTitle(identifier, delimiter)).replaceAll("$content", contentBody);
       }
       avatarString() {
-        return `<a href="${this.avatarUrl}"><img src="${this.profile}" height="30"/></a>`;
+        return `<a href="${this.profile}"><img src="${this.avatarUrl}" height="30"/></a>`;
       }
       isGuestEntry(identifier) {
         return this.title.indexOf(identifier) === 0;
