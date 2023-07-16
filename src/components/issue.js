@@ -20,7 +20,7 @@ class Issue {
                 .replaceAll('$date', this.createdAt)
                 .replaceAll('$content', contentBody);
         }
-        
+
         return template
             .replaceAll('$username', this.author)
             .replaceAll('$profile', this.profile)
@@ -30,7 +30,7 @@ class Issue {
     }
 
     avatarString() {
-        return `<a href="${this.avatarUrl}"><img src="${this.profile}" height="30"/></a>`;
+        return `<a href="${this.profile}"><img src="${this.avatarUrl}" height="30"/></a>`;
     }
 
     isGuestEntry(identifier) {
