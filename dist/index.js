@@ -8924,9 +8924,9 @@ var require_issue = __commonJS({
       }
       getTitle(identifier, delimiter) {
         const titleExp = new RegExp(`^([${identifier}]+.+[${delimiter}])`, "g");
-        const trimExp = new RegExp(`^s+|s+$`, "g");
+        const trimExp = new RegExp(`^s+|s+$`, "gm");
         const titleContent = this.title.replace(titleExp, "");
-        return titleContent.replace(trimExp, "");
+        return titleContent.replaceAll(trimExp, "");
       }
     };
     module2.exports = Issue;
