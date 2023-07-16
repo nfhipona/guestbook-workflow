@@ -34,7 +34,7 @@ async function runQuery() {
     const params = {
         owner: owner,
         repo: repo,
-        num: MAX_DISPLAY_COUNT
+        num: Number(MAX_DISPLAY_COUNT) || 0
     };
     
     const { repository } = await octokit.graphql(queryStr, params);

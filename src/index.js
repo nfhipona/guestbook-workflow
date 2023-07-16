@@ -5,7 +5,7 @@ const {
     GITHUB_TOKEN,
     TARGET_BRANCH, 
     ENABLE_KEEP_ALIVE,
-    MAX_DISPLAY_COUNT,
+    MAX_CHARACTER_COUNT,
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     SECTION_IDENTIFIER,
@@ -15,7 +15,6 @@ const {
     owner, 
     repo
 } = require('./components/constants');
-const { MAX_CHARACTER_COUNT } = require('./components/constants');
 
 async function updateReadme(content) {
     return await ReadmeBox.updateSection(content, {
@@ -42,7 +41,7 @@ function constructGuestbook(issues = []) {
 
     const guestbookComments = issues
         .map(item => item.toEntryString(
-                ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, MAX_CHARACTER_COUNT
+                ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
             ))
         .join(' ');
 
