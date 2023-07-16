@@ -60,7 +60,7 @@ function constructGuestbook(issues = []) {
 }
 
 async function runWorkflow() {
-    const issues = runQuery();
+    const issues = await runQuery();
     const guestbookContents = constructGuestbook(issues);
     await updateReadme(guestbookContents);
 };
