@@ -2,7 +2,7 @@
   "name": "guestbook-workflow",
   "version": "1.0.0",
   "description": "Allows you to use your repo issues as your guest book entries and show it on your github profile or project readme",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "esbuild ./src/index.js  --bundle --platform=node --outfile=dist/index.js"
   },
