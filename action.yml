@@ -53,11 +53,11 @@ inputs:
     required: false
   comment_link_template:
     description: 'Template format to display link to guestbook'
-    default: 'Do you like my project or just want to say hi? Feel free to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to my guestbook!'
+    default: 'Do you like my project or just want to say hi? Feel free to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to ***[my](https://github.com/$username)*** guestbook!'
     required: false
   empty_template:
     description: 'Template format to display when guestbook is empty. variables: $username, $repo, $identifier'
-    default: 'Nothing here, yet. Be the first to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to $username`s guestbook!'
+    default: 'Nothing here, yet. Be the first to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to ***[my](https://github.com/$username)*** guestbook!'
     required: false
   target_branch:
     description: 'The target branch to work on. default to main'

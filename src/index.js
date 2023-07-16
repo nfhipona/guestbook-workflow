@@ -50,11 +50,7 @@ function constructGuestbook(issues = []) {
         .replaceAll('$repo', repo)
         .replaceAll('$identifier', ENTRY_IDENTIFIER);
 
-    return `
-        ${guestbookAvatars}\n\n
-        ${guestbookComments}\n\n
-        ${newEntryLink}
-    `;
+    return `${guestbookAvatars}\n\n${guestbookComments}\n\n${newEntryLink}`;
 }
 
 async function runWorkflow() {
