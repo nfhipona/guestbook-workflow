@@ -1,8 +1,10 @@
 # guestbook-workflow
 Show guestbook with issues entries
 
+
 ## Usage
 Define your yml config file under .github/workflows folder in your repository.
+
 *Valid inputs are:*
 `max_display_count`, `max_character_count`, `committer_username`, `committer_email`, `commit_message`, `enable_keepalive`, `max_retry_count`, `retry_wait_time`, `entry_identifier`, `entry_identifier_delimiter`, `comment_template`, `comment_empty_title_template`, `comment_link_template`, `empty_template`, `target_branch`, `section_identifier`
 
