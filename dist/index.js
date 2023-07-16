@@ -8863,6 +8863,7 @@ var require_constants = __commonJS({
     var ENTRY_IDENTIFIER2 = core.getInput("entry_identifier");
     var ENTRY_IDENTIFIER_DELIMITER2 = core.getInput("entry_identifier_delimiter");
     var COMMENT_TEMPLATE2 = core.getInput("comment_template");
+    var COMMENT_EMPTY_TITLE_TEMPLATE2 = core.getInput("comment_empty_title_template");
     var COMMENT_LINK_TEMPLATE2 = core.getInput("comment_link_template");
     var EMPTY_TEMPLATE2 = core.getInput("empty_template");
     var TARGET_BRANCH2 = core.getInput("target_branch");
@@ -8882,6 +8883,7 @@ var require_constants = __commonJS({
       ENTRY_IDENTIFIER: ENTRY_IDENTIFIER2,
       ENTRY_IDENTIFIER_DELIMITER: ENTRY_IDENTIFIER_DELIMITER2,
       COMMENT_TEMPLATE: COMMENT_TEMPLATE2,
+      COMMENT_EMPTY_TITLE_TEMPLATE: COMMENT_EMPTY_TITLE_TEMPLATE2,
       COMMENT_LINK_TEMPLATE: COMMENT_LINK_TEMPLATE2,
       EMPTY_TEMPLATE: EMPTY_TEMPLATE2,
       TARGET_BRANCH: TARGET_BRANCH2,
@@ -8905,10 +8907,14 @@ var require_issue = __commonJS({
         this.avatarUrl = avatarUrl;
         this.profile = `https://github.com/${author}`;
       }
-      toEntryString(identifier, delimiter, template, max_character_count = 0) {
+      toEntryString(identifier, delimiter, template, no_title_template, max_character_count = 0) {
         const charCount = max_character_count === 0 ? this.bodyText.length : Math.min(max_character_count, this.bodyText.length);
-        const contents = this.bodyText.slice(0, charCount);
-        return template.replaceAll("$username", this.author).replaceAll("$profile", this.profile).replaceAll("$date", this.createdAt).replaceAll("$title", this.getTitle(identifier, delimiter)).replaceAll("$content", contents);
+        const contentTitle = this.getTitle(identifier, delimiter);
+        const contentBody = this.bodyText.slice(0, charCount);
+        if (contentTitle.length === 0) {
+          return no_title_template.replaceAll("$username", this.author).replaceAll("$profile", this.profile).replaceAll("$date", this.createdAt).replaceAll("$content", contentBody);
+        }
+        return template.replaceAll("$username", this.author).replaceAll("$profile", this.profile).replaceAll("$date", this.createdAt).replaceAll("$title", this.getTitle(identifier, delimiter)).replaceAll("$content", contentBody);
       }
       avatarString() {
         return `<a href="${this.avatarUrl}"><img src="${this.profile}" height="30"/></a>`;
@@ -8993,6 +8999,7 @@ var {
   ENTRY_IDENTIFIER_DELIMITER,
   SECTION_IDENTIFIER,
   COMMENT_TEMPLATE,
+  COMMENT_EMPTY_TITLE_TEMPLATE,
   COMMENT_LINK_TEMPLATE,
   EMPTY_TEMPLATE,
   owner,
@@ -9018,8 +9025,9 @@ function constructGuestbook(issues = []) {
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
+    COMMENT_EMPTY_TITLE_TEMPLATE,
     Number(MAX_CHARACTER_COUNT) || 0
-  )).join(" ");
+  )).join("\n");
   const newEntryLink = COMMENT_LINK_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER);
   return `${guestbookAvatars}
 
