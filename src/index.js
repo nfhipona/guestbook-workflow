@@ -28,7 +28,7 @@ async function updateReadme(content) {
     });
 }
 
-function constructGuestbook(issues) {
+function constructGuestbook(issues = []) {
     if (issues.length === 0) {
         return EMPTY_TEMPLATE
             .replace('$username', owner)
