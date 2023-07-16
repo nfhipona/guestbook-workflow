@@ -8,16 +8,25 @@ class Issue {
         this.profile = `https://github.com/${author}`;
     }
     
-    toEntryString(identifier, delimiter, template, max_character_count = 0) {
+    toEntryString(identifier, delimiter, template, no_title_template, max_character_count = 0) {
         const charCount = max_character_count === 0 ? this.bodyText.length : Math.min(max_character_count, this.bodyText.length);
-        const contents = this.bodyText.slice(0, charCount);
+        const contentTitle = this.getTitle(identifier, delimiter);
+        const contentBody = this.bodyText.slice(0, charCount);
 
+        if (contentTitle.length === 0) {
+            return no_title_template
+                .replaceAll('$username', this.author)
+                .replaceAll('$profile', this.profile)
+                .replaceAll('$date', this.createdAt)
+                .replaceAll('$content', contentBody);
+        }
+        
         return template
             .replaceAll('$username', this.author)
             .replaceAll('$profile', this.profile)
             .replaceAll('$date', this.createdAt)
             .replaceAll('$title', this.getTitle(identifier, delimiter))
-            .replaceAll('$content', contents);
+            .replaceAll('$content', contentBody);
     }
 
     avatarString() {

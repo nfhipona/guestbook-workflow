@@ -10,6 +10,7 @@ const {
     ENTRY_IDENTIFIER_DELIMITER,
     SECTION_IDENTIFIER,
     COMMENT_TEMPLATE,
+    COMMENT_EMPTY_TITLE_TEMPLATE,
     COMMENT_LINK_TEMPLATE,
     EMPTY_TEMPLATE,
     owner, 
@@ -41,9 +42,9 @@ function constructGuestbook(issues = []) {
 
     const guestbookComments = issues
         .map(item => item.toEntryString(
-                ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
+                ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, COMMENT_EMPTY_TITLE_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
             ))
-        .join(' ');
+        .join('\n');
 
     const newEntryLink = COMMENT_LINK_TEMPLATE
         .replaceAll('$username', owner)

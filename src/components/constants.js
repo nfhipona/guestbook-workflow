@@ -13,6 +13,7 @@ const RETRY_WAIT_TIME = core.getInput('retry_wait_time');
 const ENTRY_IDENTIFIER = core.getInput('entry_identifier');
 const ENTRY_IDENTIFIER_DELIMITER = core.getInput('entry_identifier_delimiter');
 const COMMENT_TEMPLATE = core.getInput('comment_template');
+const COMMENT_EMPTY_TITLE_TEMPLATE = core.getInput('comment_empty_title_template');
 const COMMENT_LINK_TEMPLATE = core.getInput('comment_link_template');
 const EMPTY_TEMPLATE = core.getInput('empty_template');
 const TARGET_BRANCH = core.getInput('target_branch');
@@ -34,6 +35,7 @@ module.exports = {
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
+    COMMENT_EMPTY_TITLE_TEMPLATE,
     COMMENT_LINK_TEMPLATE,
     EMPTY_TEMPLATE,
     TARGET_BRANCH,
