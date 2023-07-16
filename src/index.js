@@ -29,7 +29,7 @@ async function updateReadme(content) {
 }
 
 function constructGuestbook(issues = []) {
-    const comments = issues.map(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+    const comments = issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
     if (comments.length === 0) {
         return EMPTY_TEMPLATE
             .replaceAll('$username', owner)
