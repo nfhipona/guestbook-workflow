@@ -45,6 +45,7 @@ jobs:
 
 ## Guestbook
 <!--START_SECTION:guestbook-section-->
+Nothing here, yet. Be the first to [post something](https://github.com/nfhipona/guestbook-workflow/issues/new?title=GUEST_BOOK_ENTRY) to ***[my](https://github.com/nfhipona)*** guestbook!
 <!--END_SECTION:guestbook-section-->
 
 
