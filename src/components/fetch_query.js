@@ -5,12 +5,12 @@
 const { octokit, owner, repo } = require("./constants");
 const Issue = require('./issue');
 
-async function runQuery() {    
+async function runFetchQuery() {
     const results = await octokit.request('GET /repos/{owner}/{repo}/issues', {
         owner,
         repo,
         headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
+            'X-GitHub-Api-Version': '2022-11-28'
         }
     });
 
@@ -28,4 +28,4 @@ async function runQuery() {
     return issues;
 }
 
-module.exports = runQuery;
+module.exports = { runFetchQuery };

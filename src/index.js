@@ -1,9 +1,9 @@
 const { ReadmeBox } = require('readme-box')
-const runQuery = require('./components/graphql_query');
+const { runFetchQuery } = require('./components/graphql_query');
 
-const { 
+const {
     GITHUB_TOKEN,
-    TARGET_BRANCH, 
+    TARGET_BRANCH,
     ENABLE_KEEP_ALIVE,
     MAX_CHARACTER_COUNT,
     ENTRY_IDENTIFIER,
@@ -13,7 +13,7 @@ const {
     COMMENT_EMPTY_TITLE_TEMPLATE,
     COMMENT_LINK_TEMPLATE,
     EMPTY_TEMPLATE,
-    owner, 
+    owner,
     repo
 } = require('./components/constants');
 
@@ -43,8 +43,8 @@ function constructGuestbook(issues = []) {
 
     const guestbookComments = comments
         .map(item => item.toEntryString(
-                ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, COMMENT_EMPTY_TITLE_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
-            ))
+            ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER, COMMENT_TEMPLATE, COMMENT_EMPTY_TITLE_TEMPLATE, Number(MAX_CHARACTER_COUNT) || 0
+        ))
         .join('\n');
 
     const newEntryLink = COMMENT_LINK_TEMPLATE
@@ -56,7 +56,7 @@ function constructGuestbook(issues = []) {
 }
 
 async function runWorkflow() {
-    const issues = await runQuery();
+    const issues = await runFetchQuery();
     const guestbookContents = constructGuestbook(issues);
     await updateReadme(guestbookContents);
 };

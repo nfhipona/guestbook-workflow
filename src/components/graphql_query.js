@@ -10,7 +10,7 @@ const {
 } = require("./constants");
 const Issue = require('./issue');
 
-async function runQuery() {
+async function runFetchQuery() {
     const format = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
     const queryStr = `
         query latestIssues($owner: String!, $repo: String!, $num: Int) {
@@ -53,4 +53,8 @@ async function runQuery() {
     return issues;
 }
 
-module.exports = runQuery;
+async function closeIssues() {
+
+}
+
+module.exports = { runFetchQuery, closeIssues };
