@@ -77,11 +77,11 @@ async function runPageInfoQuery() {
     return repository.issues.pageInfo;
 }
 
-async function runNextCloseFetchQuery(identifier, delimiter, endCursor) {
+async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const queryStr = `
         query nextIssues($owner: String!, $repo: String!, $num: Int) {
             repository(owner: $owner, name: $repo) {
-                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: ${endCursor}) {
+                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: ${fetchCursor}) {
                     edges {
                         node {
                             id
