@@ -3,7 +3,18 @@ Allows you to use your repo issues as your guestbook entries and show it on your
 
 
 ## Usage
-Define your yml config file under .github/workflows folder in your repository.
+Create a folder named `.github/workflows` in your root directory.
+Define your `yml` config file under .github/workflows folder in your repository.
+Add workflow section tag in your `README` file.
+
+```md
+<!--START_SECTION:[section_identifier]-->
+<!--END_SECTION:[section_identifier]-->
+
+ex.
+<!--START_SECTION:guestbook-section-->
+<!--END_SECTION:guestbook-section-->
+```
 
 *Valid inputs are:*
 `max_display_count`, `max_character_count`, `committer_username`, `committer_email`, `commit_message`, `enable_keepalive`, `max_retry_count`, `retry_wait_time`, `entry_identifier`, `entry_identifier_delimiter`, `comment_template`, `comment_empty_title_template`, `comment_link_template`, `empty_template`, `target_branch`, `section_identifier`
