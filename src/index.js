@@ -1,5 +1,5 @@
 const { ReadmeBox } = require('readme-box')
-const { runFetchQuery } = require('./components/graphql_query');
+const { runFetchQuery, runCloseAllOutdatedIssues } = require('./components/graphql_query');
 
 const {
     GITHUB_TOKEN,
@@ -61,7 +61,9 @@ async function runWorkflow() {
     const guestbookContents = constructGuestbook(issues);
     await updateReadme(guestbookContents);
 
-
+    if (CLOSE_OUDATED_ISSUES === true) {
+        await runCloseAllOutdatedIssues(ENTRY_IDENTIFIER, ENTRY_IDENTIFIER_DELIMITER);
+    }
 };
 
 runWorkflow();
