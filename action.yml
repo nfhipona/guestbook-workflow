@@ -77,7 +77,7 @@ inputs:
     required: false
   close_outdated_issues:
     description: 'Close all oudated issues or comments'
-    default: true
+    default: false
     required: false
 
 runs:

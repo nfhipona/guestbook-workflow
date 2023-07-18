@@ -13,6 +13,7 @@ const {
     COMMENT_EMPTY_TITLE_TEMPLATE,
     COMMENT_LINK_TEMPLATE,
     EMPTY_TEMPLATE,
+    CLOSE_OUDATED_ISSUES,
     owner,
     repo
 } = require('./components/constants');

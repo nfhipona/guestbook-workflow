@@ -144,7 +144,10 @@ async function closeIssue(issueId) {
 
 async function runCloseAllOutdatedIssues(identifier, delimiter) {
     const pageInfo = await runPageInfoQuery();
-    await runNextCloseFetchQuery(identifier, delimiter);
+    const { hasNextPage, endCursor } = pageInfo;
+    if (hasNextPage === true) {
+        await runNextCloseFetchQuery(identifier, delimiter, endCursor);
+    }
 }
 
 module.exports = {
