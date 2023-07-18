@@ -20,3 +20,5 @@ jobs:
         with:
           target_branch: 'main'
           section_identifier: 'guestbook-section'
+          include_body_formatting: true # this already defaults to true -- just for demo
+          close_outdated_issues: true
