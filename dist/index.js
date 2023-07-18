@@ -8860,7 +8860,7 @@ var require_constants = __commonJS({
     var ENABLE_KEEP_ALIVE2 = core.getInput("enable_keepalive");
     var MAX_RETRY_COUNT = core.getInput("max_retry_count");
     var RETRY_WAIT_TIME = core.getInput("retry_wait_time");
-    var ENTRY_IDENTIFIER2 = core.getInput("entry_identifier");
+    var ENTRY_IDENTIFIER3 = core.getInput("entry_identifier");
     var ENTRY_IDENTIFIER_DELIMITER2 = core.getInput("entry_identifier_delimiter");
     var COMMENT_TEMPLATE2 = core.getInput("comment_template");
     var COMMENT_EMPTY_TITLE_TEMPLATE2 = core.getInput("comment_empty_title_template");
@@ -8868,6 +8868,8 @@ var require_constants = __commonJS({
     var EMPTY_TEMPLATE2 = core.getInput("empty_template");
     var TARGET_BRANCH2 = core.getInput("target_branch");
     var SECTION_IDENTIFIER2 = core.getInput("section_identifier");
+    var INCLUDE_BODY_FORMATTING = core.getInput("include_body_formatting");
+    var CLOSE_OUDATED_ISSUES2 = core.getInput("close_outdated_issues");
     var octokit = github.getOctokit(GITHUB_TOKEN2);
     var { owner: owner2, repo: repo2 } = github.context.repo;
     module2.exports = {
@@ -8880,7 +8882,7 @@ var require_constants = __commonJS({
       ENABLE_KEEP_ALIVE: ENABLE_KEEP_ALIVE2,
       MAX_RETRY_COUNT,
       RETRY_WAIT_TIME,
-      ENTRY_IDENTIFIER: ENTRY_IDENTIFIER2,
+      ENTRY_IDENTIFIER: ENTRY_IDENTIFIER3,
       ENTRY_IDENTIFIER_DELIMITER: ENTRY_IDENTIFIER_DELIMITER2,
       COMMENT_TEMPLATE: COMMENT_TEMPLATE2,
       COMMENT_EMPTY_TITLE_TEMPLATE: COMMENT_EMPTY_TITLE_TEMPLATE2,
@@ -8888,6 +8890,8 @@ var require_constants = __commonJS({
       EMPTY_TEMPLATE: EMPTY_TEMPLATE2,
       TARGET_BRANCH: TARGET_BRANCH2,
       SECTION_IDENTIFIER: SECTION_IDENTIFIER2,
+      INCLUDE_BODY_FORMATTING,
+      CLOSE_OUDATED_ISSUES: CLOSE_OUDATED_ISSUES2,
       octokit,
       owner: owner2,
       repo: repo2
@@ -8930,7 +8934,27 @@ var require_issue = __commonJS({
         return cleaned === identifier ? "" : cleaned;
       }
     };
-    module2.exports = Issue;
+    var CloseIssue = class {
+      constructor(id, title, createdAt) {
+        this.id = id;
+        this.title = title;
+        this.createdAt = new Date(createdAt).toLocaleDateString("en-US");
+      }
+      isGuestEntry(identifier) {
+        return this.title.indexOf(identifier) === 0;
+      }
+      getTitle(identifier, delimiter) {
+        const titleExp = new RegExp(`^([${identifier}]+.+[${delimiter}])`, "g");
+        const trimExp = new RegExp(`^s+|s+$`, "gm");
+        const titleContent = this.title.replace(titleExp, "");
+        const cleaned = titleContent.replaceAll(trimExp, "");
+        return cleaned === identifier ? "" : cleaned;
+      }
+    };
+    module2.exports = {
+      Issue,
+      CloseIssue
+    };
   }
 });
 
@@ -8939,12 +8963,14 @@ var require_graphql_query = __commonJS({
   "src/components/graphql_query.js"(exports, module2) {
     var {
       MAX_DISPLAY_COUNT,
+      INCLUDE_BODY_FORMATTING,
       octokit,
       owner: owner2,
       repo: repo2
     } = require_constants();
-    var Issue = require_issue();
-    async function runQuery2() {
+    var { Issue, CloseIssue } = require_issue();
+    async function runFetchQuery2() {
+      const format = INCLUDE_BODY_FORMATTING ? "body" : "bodyText";
       const queryStr = `
         query latestIssues($owner: String!, $repo: String!, $num: Int) {
             repository(owner: $owner, name: $repo) {
@@ -8953,7 +8979,7 @@ var require_graphql_query = __commonJS({
                         node {
                             title
                             url
-                            bodyText
+                            ${format}
                             createdAt
                             author {
                                 login
@@ -8965,12 +8991,12 @@ var require_graphql_query = __commonJS({
             }
         }
     `;
-      const params = {
+      const params2 = {
         owner: owner2,
         repo: repo2,
         num: Number(MAX_DISPLAY_COUNT) || 0
       };
-      const { repository } = await octokit.graphql(queryStr, params);
+      const { repository } = await octokit.graphql(queryStr, params2);
       const issues = repository.issues.edges.map((issue) => {
         const { title, bodyText, createdAt, author } = issue.node;
         const { login, avatarUrl } = author;
@@ -8984,25 +9010,122 @@ var require_graphql_query = __commonJS({
       }).filter((item) => !!item.bodyText);
       return issues;
     }
-    module2.exports = runQuery2;
+    async function runPageInfoQuery() {
+      const queryStr = `
+        query latestIssues($owner: String!, $repo: String!, $num: Int) {
+            repository(owner: $owner, name: $repo) {
+                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}) {
+                    pageInfo {
+                        hasNextPage
+                        endCursor
+                    }
+                }
+            }
+        }
+    `;
+      const params2 = {
+        owner: owner2,
+        repo: repo2,
+        num: Number(MAX_DISPLAY_COUNT) || 0
+      };
+      const { repository } = await octokit.graphql(queryStr, params2);
+      return repository.issues.pageInfo;
+    }
+    async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
+      const queryStr = `
+        query nextIssues($owner: String!, $repo: String!, $num: Int) {
+            repository(owner: $owner, name: $repo) {
+                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: ${fetchCursor}) {
+                    edges {
+                        node {
+                            id
+                            title
+                            createdAt
+                        }
+                    }
+                    pageInfo {
+                        hasNextPage
+                        endCursor
+                    }
+                }
+            }
+        }
+    `;
+      const params2 = {
+        owner: owner2,
+        repo: repo2,
+        num: Number(MAX_DISPLAY_COUNT) || 0
+      };
+      const { repository } = await octokit.graphql(queryStr, params2);
+      const { edges, pageInfo } = repository.issues;
+      const issues = edges.map((issue) => {
+        const { id, title, createdAt } = issue.node;
+        return new CloseIssue(
+          id,
+          title,
+          createdAt
+        );
+      });
+      const comments = issues.filter((issue) => issue.isGuestEntry(ENTRY_IDENTIFIER));
+      for (const comment of comments) {
+        const result = await closeIssue(comment.id);
+        const { state, stateReason } = result;
+        console.log(`id: ${comment.id}
+title: ${comment.title}
+createdAt: ${comment.createdAt}
+state: ${state}
+stateReason: ${stateReason}`);
+      }
+      const { hasNextPage, endCursor } = pageInfo;
+      if (hasNextPage === true) {
+        await runNextCloseFetchQuery(identifier, delimiter, endCursor);
+      }
+    }
+    async function closeIssue(issueId) {
+      const queryStr = `
+        closeIssue(input: {stateReason: COMPLETED, issueId: ${issueId}}) {
+            issue {
+                id
+                state
+                stateReason
+            }
+        }
+    `;
+      return await octokit.graphql(queryStr, params);
+    }
+    async function runCloseAllOutdatedIssues2(identifier, delimiter) {
+      const pageInfo = await runPageInfoQuery();
+      const { hasNextPage, endCursor } = pageInfo;
+      if (hasNextPage === true) {
+        await runNextCloseFetchQuery(identifier, delimiter, endCursor);
+      }
+    }
+    module2.exports = {
+      runFetchQuery: runFetchQuery2,
+      runPageInfoQuery,
+      runNextCloseFetchQuery,
+      closeIssue,
+      runCloseAllOutdatedIssues: runCloseAllOutdatedIssues2
+    };
   }
 });
 
 // src/index.js
 var { ReadmeBox } = require_dist();
-var runQuery = require_graphql_query();
+var { runFetchQuery, runCloseAllOutdatedIssues } = require_graphql_query();
 var {
   GITHUB_TOKEN,
   TARGET_BRANCH,
   ENABLE_KEEP_ALIVE,
   MAX_CHARACTER_COUNT,
-  ENTRY_IDENTIFIER,
+  ENTRY_IDENTIFIER: ENTRY_IDENTIFIER2,
   ENTRY_IDENTIFIER_DELIMITER,
   SECTION_IDENTIFIER,
   COMMENT_TEMPLATE,
   COMMENT_EMPTY_TITLE_TEMPLATE,
   COMMENT_LINK_TEMPLATE,
   EMPTY_TEMPLATE,
+  CLOSE_OUDATED_ISSUES,
   owner,
   repo
 } = require_constants();
@@ -9018,19 +9141,19 @@ async function updateReadme(content) {
   });
 }
 function constructGuestbook(issues = []) {
-  const comments = issues.filter((issue) => issue.isGuestEntry(ENTRY_IDENTIFIER));
+  const comments = issues.filter((issue) => issue.isGuestEntry(ENTRY_IDENTIFIER2));
   if (comments.length === 0) {
-    return EMPTY_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER);
+    return EMPTY_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER2);
   }
   const guestbookAvatars = comments.map((item) => item.avatarString()).join(" ");
   const guestbookComments = comments.map((item) => item.toEntryString(
-    ENTRY_IDENTIFIER,
+    ENTRY_IDENTIFIER2,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,
     COMMENT_EMPTY_TITLE_TEMPLATE,
     Number(MAX_CHARACTER_COUNT) || 0
   )).join("\n");
-  const newEntryLink = COMMENT_LINK_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER);
+  const newEntryLink = COMMENT_LINK_TEMPLATE.replaceAll("$username", owner).replaceAll("$repo", repo).replaceAll("$identifier", ENTRY_IDENTIFIER2);
   return `${guestbookAvatars}
 
 ${guestbookComments}
@@ -9038,9 +9161,12 @@ ${guestbookComments}
 ${newEntryLink}`;
 }
 async function runWorkflow() {
-  const issues = await runQuery();
+  const issues = await runFetchQuery();
   const guestbookContents = constructGuestbook(issues);
   await updateReadme(guestbookContents);
+  if (CLOSE_OUDATED_ISSUES === true) {
+    await runCloseAllOutdatedIssues(ENTRY_IDENTIFIER2, ENTRY_IDENTIFIER_DELIMITER);
+  }
 }
 runWorkflow();
 /*! Bundled license information:
