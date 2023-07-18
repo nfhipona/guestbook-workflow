@@ -59,6 +59,8 @@ async function runWorkflow() {
     const issues = await runFetchQuery();
     const guestbookContents = constructGuestbook(issues);
     await updateReadme(guestbookContents);
+
+
 };
 
 runWorkflow();

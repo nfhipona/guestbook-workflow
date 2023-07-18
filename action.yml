@@ -75,6 +75,10 @@ inputs:
     description: 'Flag to tell the parser to include original formating on the comment body'
     default: true
     required: false
+  close_outdated_issues:
+    description: 'Close all oudated issues or comments'
+    default: true
+    required: false
 
 runs:
   using: node16
