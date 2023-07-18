@@ -8903,18 +8903,18 @@ var require_constants = __commonJS({
 var require_issue = __commonJS({
   "src/components/issue.js"(exports, module2) {
     var Issue = class {
-      constructor(title, bodyText, createdAt, author, avatarUrl) {
+      constructor(title, content, createdAt, author, avatarUrl) {
         this.title = title;
-        this.bodyText = bodyText;
+        this.content = content;
         this.createdAt = new Date(createdAt).toLocaleDateString("en-US");
         this.author = author;
         this.avatarUrl = avatarUrl;
         this.profile = `https://github.com/${author}`;
       }
       toEntryString(identifier, delimiter, template, no_title_template, max_character_count = 0) {
-        const charCount = max_character_count === 0 ? this.bodyText.length : Math.min(max_character_count, this.bodyText.length);
+        const charCount = max_character_count === 0 ? this.content.length : Math.min(max_character_count, this.content.length);
         const contentTitle = this.getTitle(identifier, delimiter);
-        const contentBody = this.bodyText.slice(0, charCount);
+        const contentBody = this.content.slice(0, charCount);
         if (contentTitle.length === 0) {
           return no_title_template.replaceAll("$username", this.author).replaceAll("$profile", this.profile).replaceAll("$date", this.createdAt).replaceAll("$content", contentBody);
         }
@@ -8998,16 +8998,17 @@ var require_graphql_query = __commonJS({
       };
       const { repository } = await octokit.graphql(queryStr, params2);
       const issues = repository.issues.edges.map((issue) => {
-        const { title, bodyText, createdAt, author } = issue.node;
+        const { title, body, bodyText, createdAt, author } = issue.node;
         const { login, avatarUrl } = author;
+        const bodyContent = INCLUDE_BODY_FORMATTING ? body : bodyText;
         return new Issue(
           title,
-          bodyText,
+          bodyContent,
           createdAt,
           login,
           avatarUrl
         );
-      }).filter((item) => !!item.bodyText);
+      }).filter((item) => !!item.content);
       return issues;
     }
     async function runPageInfoQuery() {
