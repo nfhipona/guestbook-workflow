@@ -13,42 +13,9 @@ Add workflow section tag in your `README` file.
 
 ex.
 <!--START_SECTION:guestbook-section-->
-<!--END_SECTION:guestbook-section-->
-```
+<a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a>
 
-*Valid inputs are:*
-`max_display_count`, `max_character_count`, `committer_username`, `committer_email`, `commit_message`, `enable_keepalive`, `max_retry_count`, `retry_wait_time`, `entry_identifier`, `entry_identifier_delimiter`, `comment_template`, `comment_empty_title_template`, `comment_link_template`, `empty_template`, `target_branch`, `section_identifier`
-
-```yml
-name: Guestbook Workflow
-on:
-  schedule: # Run workflow automatically
-    - cron: '0 0 31 12 *' # Runs at 00:00 on day-of-month 31 in December.
-  workflow_dispatch: # Run workflow manually (without waiting for the cron to be called), through the GitHub Actions Workflow page directly
-  issues:
-    types: [opened, closed, reopened, deleted, edited]
-permissions:
-  contents: write # To write the generated contents to the readme
-
-jobs:
-  update_guestbook:
-    name: Update this repo's README with guestbook's latest activity
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Update guestbook
-        uses: nfhipona/guestbook-workflow@main
-        with:
-          target_branch: 'main'
-          section_identifier: 'guestbook-section'
-```
-
-
-## Guestbook
-<!--START_SECTION:guestbook-section-->
-<a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a>
-
+* **[nfhipona](https://github.com/nfhipona) *wrote on 7/18/2023*:**  With body formatting: This guestbook workflow was inspired by readme-guestbook!
 * **[nfhipona](https://github.com/nfhipona) *wrote on 7/16/2023*:** Another comment from random pips
 * **[nfhipona](https://github.com/nfhipona) *wrote on 7/16/2023*:**  CUSTOM_TITLE: Testing the waters with updated template formatting.
 * **[nfhipona](https://github.com/nfhipona) *wrote on 7/16/2023*:**  Comment_Title: Comment Body...
