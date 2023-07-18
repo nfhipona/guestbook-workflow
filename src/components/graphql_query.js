@@ -42,13 +42,14 @@ async function runFetchQuery() {
     const { repository } = await octokit.graphql(queryStr, params);
     const issues = repository.issues.edges
         .map(issue => {
-            const { title, bodyText, createdAt, author } = issue.node;
+            const { title, body, bodyText, createdAt, author } = issue.node;
             const { login, avatarUrl } = author;
+            const bodyContent = INCLUDE_BODY_FORMATTING ? body : bodyText;
             return new Issue(
-                title, bodyText, createdAt, login, avatarUrl
+                title, bodyContent, createdAt, login, avatarUrl
             );
         })
-        .filter(item => !!item.bodyText);
+        .filter(item => !!item.content);
 
     return issues;
 }

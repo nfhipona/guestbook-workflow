@@ -1,7 +1,7 @@
 class Issue {
-    constructor(title, bodyText, createdAt, author, avatarUrl) {
+    constructor(title, content, createdAt, author, avatarUrl) {
         this.title = title;
-        this.bodyText = bodyText;
+        this.content = content;
         this.createdAt = new Date(createdAt).toLocaleDateString('en-US');
         this.author = author;
         this.avatarUrl = avatarUrl;
@@ -9,9 +9,9 @@ class Issue {
     }
 
     toEntryString(identifier, delimiter, template, no_title_template, max_character_count = 0) {
-        const charCount = max_character_count === 0 ? this.bodyText.length : Math.min(max_character_count, this.bodyText.length);
+        const charCount = max_character_count === 0 ? this.content.length : Math.min(max_character_count, this.content.length);
         const contentTitle = this.getTitle(identifier, delimiter);
-        const contentBody = this.bodyText.slice(0, charCount);
+        const contentBody = this.content.slice(0, charCount);
 
         if (contentTitle.length === 0) {
             return no_title_template
