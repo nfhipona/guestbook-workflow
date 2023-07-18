@@ -18,6 +18,7 @@ const COMMENT_LINK_TEMPLATE = core.getInput('comment_link_template');
 const EMPTY_TEMPLATE = core.getInput('empty_template');
 const TARGET_BRANCH = core.getInput('target_branch');
 const SECTION_IDENTIFIER = core.getInput('section_identifier');
+const INCLUDE_BODY_FORMATTING = core.getInput('include_body_formatting');
 
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { owner, repo } = github.context.repo;
@@ -40,7 +41,8 @@ module.exports = {
     EMPTY_TEMPLATE,
     TARGET_BRANCH,
     SECTION_IDENTIFIER,
+    INCLUDE_BODY_FORMATTING,
     octokit,
-    owner, 
+    owner,
     repo
 };

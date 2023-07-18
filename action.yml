@@ -71,6 +71,10 @@ inputs:
     description: 'The section identifier in readme file'
     default: 'guestbook'
     required: false
+  include_body_formatting:
+    description: 'Flag to tell the parser to include original formating on the comment body'
+    default: true
+    required: false
 
 runs:
   using: node16

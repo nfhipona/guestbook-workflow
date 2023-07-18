@@ -1,15 +1,17 @@
 // https://docs.github.com/en/graphql/guides/forming-calls-with-graphql
 // https://docs.github.com/en/graphql/overview/explorer
 
-const { 
-    MAX_DISPLAY_COUNT, 
-    octokit, 
-    owner, 
-    repo 
+const {
+    MAX_DISPLAY_COUNT,
+    INCLUDE_BODY_FORMATTING,
+    octokit,
+    owner,
+    repo
 } = require("./constants");
 const Issue = require('./issue');
 
 async function runQuery() {
+    const format = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
     const queryStr = `
         query latestIssues($owner: String!, $repo: String!, $num: Int) {
             repository(owner: $owner, name: $repo) {
@@ -18,7 +20,7 @@ async function runQuery() {
                         node {
                             title
                             url
-                            bodyText
+                            ${format}
                             createdAt
                             author {
                                 login
@@ -30,13 +32,13 @@ async function runQuery() {
             }
         }
     `;
-    
+
     const params = {
         owner: owner,
         repo: repo,
         num: Number(MAX_DISPLAY_COUNT) || 0
     };
-    
+
     const { repository } = await octokit.graphql(queryStr, params);
     const issues = repository.issues.edges
         .map(issue => {
