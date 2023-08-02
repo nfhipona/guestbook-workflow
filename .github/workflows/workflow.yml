@@ -1,7 +1,7 @@
 name: Guestbook Workflow
 on:
   schedule: # Run workflow automatically
-    - cron: '0 0 31 12 *' # Runs at 00:00 on day-of-month 31 in December.
+    - cron: '59 23 * * 6' # Runs at 23:59 on Saturday.
   workflow_dispatch: # Run workflow manually (without waiting for the cron to be called), through the GitHub Actions Workflow page directly
   issues:
     types: [opened, closed, reopened, deleted, edited]
@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Update guestbook
+        
+      - name: Update guestbook with the latest guest post entries
         uses: nfhipona/guestbook-workflow@main
         with:
           target_branch: 'main'
@@ -23,3 +24,11 @@ jobs:
           include_body_formatting: true # this already defaults to true -- just for demo
           close_outdated_issues: true
           max_character_count: 300
+
+      - name: Keep repository alive
+        uses: gautamkrishnar/keepalive-workflow@v1
+        with: # https://docs.github.com/en/webhooks-and-events/webhooks/webhook-events-and-payloads#repository
+          committer_username: ${{ github.event.pusher.username }}
+          committer_email: ${{ github.event.pusher.email }}
+          commit_message: Updated with keep alive
+          time_elapsed: 30
