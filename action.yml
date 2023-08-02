@@ -8,16 +8,16 @@ inputs:
     default: ${{ github.token }}
     required: false
   max_display_count:
-    description: 'Maximum number of entries you want to show on your readme'
+    description: 'Maximum number of entries you want to show on your `README` file.'
     default: 10
     required: false
   max_character_count:
-    description: 'Maximum number of entries you want to show on your readme'
-    default: 150
+    description: 'Maximum character length to display in the guestbook'
+    default: 300
     required: false
   retry_enabled:
     description: 'Sets retry fetch flag enabled or disabled'
-    default: false
+    default: true
     required: false
   max_retry_count:
     description: 'Maximum number of times to retry the fetch operation if it fails'
@@ -28,19 +28,19 @@ inputs:
     default: 3
     required: false
   entry_identifier:
-    description: 'Guestbook title prefix identifier. GUEST_BOOK_ENTRY'
+    description: 'Guestbook title prefix identifier. `GUEST_BOOK_ENTRY`'
     default: 'GUEST_BOOK_ENTRY'
     required: false
   entry_identifier_delimiter:
-    description: 'Guestbook title prefix identifier delimiter to separate entry title. GUEST_BOOK_ENTRY: user`s title content'
+    description: 'Guestbook title prefix identifier delimiter to separate entry title. eg. `GUEST_BOOK_ENTRY: USER_CONTENT_TITLE`'
     default: ':'
     required: false
   comment_template:
-    description: 'Template format to display guests comments. variables: $username, $profile, $date, $title, $content'
+    description: 'Template format to display guests comments. variables: `$username`, `$profile`, `$date`, `$title`, `$content`'
     default: '* **[$username]($profile) *wrote on $date*:** $title: $content'
     required: false
   comment_empty_title_template:
-    description: 'Template format to display guests comments. variables: $username, $profile, $date, $content'
+    description: 'Template format to display guests comments. variables: `$username`, `$profile`, `$date`, `$content`'
     default: '* **[$username]($profile) *wrote on $date*:** $content'
     required: false
   comment_link_template:
@@ -48,7 +48,7 @@ inputs:
     default: 'Do you like my project or just want to say hi? Feel free to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to ***[my](https://github.com/$username)*** guestbook!'
     required: false
   empty_template:
-    description: 'Template format to display when guestbook is empty. variables: $username, $repo, $identifier'
+    description: 'Template format to display when guestbook is empty. variables: `$username`, `$repo`, `$identifier`'
     default: 'Nothing to see here. Be the first to [post something](https://github.com/$username/$repo/issues/new?title=$identifier) to ***[my](https://github.com/$username)*** guestbook!'
     required: false
   target_branch:
@@ -60,11 +60,11 @@ inputs:
     default: 'guestbook'
     required: false
   include_body_formatting:
-    description: 'Flag to tell the parser to include original formating on the comment body'
+    description: 'Flag to tell the parser to include original formatting on the comment body'
     default: true
     required: false
   close_outdated_issues:
-    description: 'Close all oudated issues or comments'
+    description: 'Close all outdated issues or comments past the `max_display_count` parameter.'
     default: false
     required: false
 
