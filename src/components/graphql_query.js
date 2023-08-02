@@ -4,6 +4,9 @@
 const {
     MAX_DISPLAY_COUNT,
     INCLUDE_BODY_FORMATTING,
+    RETRY_ENABLED,
+    MAX_RETRY_COUNT,
+    RETRY_WAIT_TIME,
     octokit,
     owner,
     repo
@@ -39,6 +42,30 @@ async function runFetchQuery() {
         num: Number(MAX_DISPLAY_COUNT) || 0
     };
 
+    let issues = [];
+    if (RETRY_ENABLED) {
+        let retryCount = 0;
+        while (retryCount < MAX_RETRY_COUNT) {
+            try {
+                issues = await performFetchQuery(queryStr, params);
+                break;
+            } catch (error) {
+                retryCount++;
+                await sleep(Number(RETRY_WAIT_TIME) * 1000);
+            }
+        }
+    } else {
+        issues = await performFetchQuery(queryStr, params);
+    }
+
+    return issues;
+}
+
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function performFetchQuery(queryStr, params) {
     const { repository } = await octokit.graphql(queryStr, params);
     const issues = repository.issues.edges
         .map(issue => {
