@@ -1,6 +1,6 @@
-# guestbook-workflow
+# Guestbook Workflow
 
-Allows you to use your repo issues as your guestbook entries and show it on your github profile or project's *readme*.
+Allows you to use your repo issues as your guestbook entries and show it on your github profile or project's *README* file.
 
 
 ## Environment Flags
