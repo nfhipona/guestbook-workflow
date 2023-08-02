@@ -12,6 +12,7 @@ jobs:
   update_guestbook:
     name: Update this repo's README with guestbook's latest activity
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
