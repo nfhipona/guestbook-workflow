@@ -19,7 +19,6 @@ const {
     runFetchQuery,
     runCloseAllOutdatedIssues
 } = require('./components/graphql_query');
-const { cleanedLabels } = require('./components/queries');
 
 async function updateReadme(content) {
     return await ReadmeBox.updateSection(content, {
