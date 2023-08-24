@@ -1,10 +1,12 @@
 const { ReadmeBox } = require('readme-box')
-const { runFetchQuery, runCloseAllOutdatedIssues } = require('./components/graphql_query');
+const {
+    runFetchQuery,
+    runCloseAllOutdatedIssues
+} = require('./components/graphql_query');
 
 const {
     GITHUB_TOKEN,
     TARGET_BRANCH,
-    ENABLE_KEEP_ALIVE,
     MAX_CHARACTER_COUNT,
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,

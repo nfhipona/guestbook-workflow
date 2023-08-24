@@ -9,37 +9,31 @@ const {
     RETRY_WAIT_TIME,
     octokit,
     owner,
-    repo
+    source_repo
 } = require("./constants");
-const { Issue, CloseIssue } = require('./issue');
+const {
+    LATEST_ENTRIES,
+    PAGE_INFO,
+    NEXT_ENTRIES,
+    CLOSE_ENTRY,
+
+    cleanedLabels,
+    queryString
+} = require('./queries');
+const {
+    Issue,
+    OldIssue,
+    IssueLabel
+} = require('./issue');
 
 async function runFetchQuery() {
-    const format = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
-    const queryStr = `
-        query latestIssues($owner: String!, $repo: String!, $num: Int) {
-            repository(owner: $owner, name: $repo) {
-                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}) {
-                    edges {
-                        node {
-                            title
-                            url
-                            ${format}
-                            createdAt
-                            author {
-                                login
-                                avatarUrl
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    `;
-
+    const labels = cleanedLabels();
+    const queryStr = queryString(LATEST_ENTRIES);
     const params = {
-        owner: owner,
-        repo: repo,
-        num: Number(MAX_DISPLAY_COUNT) || 0
+        owner,
+        repo: source_repo,
+        num: Number(MAX_DISPLAY_COUNT) || 0,
+        labels
     };
 
     let issues = [];
@@ -69,11 +63,19 @@ async function performFetchQuery(queryStr, params) {
     const { repository } = await octokit.graphql(queryStr, params);
     const issues = repository.issues.edges
         .map(issue => {
-            const { title, body, bodyText, createdAt, author } = issue.node;
+            const { id, title, body, bodyText, createdAt, author, labels = {} } = issue.node;
             const { login, avatarUrl } = author;
             const bodyContent = INCLUDE_BODY_FORMATTING ? body : bodyText;
+            const labelNodes = labels.edges || [];
+            const entryLabels = labelNodes.map(node => {
+                const { id, name, description, createdAt } = node;
+                return new IssueLabel(
+                    id, name, description, createdAt
+                );
+            });
+
             return new Issue(
-                title, bodyContent, createdAt, login, avatarUrl
+                id, title, bodyContent, createdAt, login, avatarUrl, entryLabels
             );
         })
         .filter(item => !!item.content);
@@ -82,23 +84,13 @@ async function performFetchQuery(queryStr, params) {
 }
 
 async function runPageInfoQuery() {
-    const queryStr = `
-        query latestIssues($owner: String!, $repo: String!, $num: Int) {
-            repository(owner: $owner, name: $repo) {
-                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}) {
-                    pageInfo {
-                        hasNextPage
-                        endCursor
-                    }
-                }
-            }
-        }
-    `;
-
+    const labels = cleanedLabels();
+    const queryStr = queryString(PAGE_INFO);
     const params = {
-        owner: owner,
-        repo: repo,
-        num: Number(MAX_DISPLAY_COUNT) || 0
+        owner,
+        repo: source_repo,
+        num: Number(MAX_DISPLAY_COUNT) || 0,
+        labels
     };
 
     const { repository } = await octokit.graphql(queryStr, params);
@@ -106,30 +98,15 @@ async function runPageInfoQuery() {
 }
 
 async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
-    const queryStr = `
-        query nextIssues($owner: String!, $repo: String!, $num: Int) {
-            repository(owner: $owner, name: $repo) {
-                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: ${fetchCursor}) {
-                    edges {
-                        node {
-                            id
-                            title
-                            createdAt
-                        }
-                    }
-                    pageInfo {
-                        hasNextPage
-                        endCursor
-                    }
-                }
-            }
-        }
-    `;
-
+    const labels = cleanedLabels();
+    const hasLabel = labels.length > 0;
+    const queryStr = queryString(NEXT_ENTRIES);
     const params = {
-        owner: owner,
-        repo: repo,
-        num: Number(MAX_DISPLAY_COUNT) || 0
+        owner,
+        repo: source_repo,
+        num: Number(MAX_DISPLAY_COUNT) || 0,
+        labels,
+        cursur: fetchCursor
     };
 
     const { repository } = await octokit.graphql(queryStr, params);
@@ -138,14 +115,14 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const issues = edges
         .map(issue => {
             const { id, title, createdAt } = issue.node;
-            return new CloseIssue(
+            return new OldIssue(
                 id, title, createdAt
             );
         })
-    const comments = issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+    const comments = hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
 
     for (const comment of comments) {
-        const result = await closeIssue(comment.id);
+        const result = await closeEntry(comment.id);
         const { state, stateReason } = result;
         console.log(`id: ${comment.id}\ntitle: ${comment.title}\ncreatedAt: ${comment.createdAt}\nstate: ${state}\nstateReason: ${stateReason}`);
     }
@@ -156,18 +133,9 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     }
 }
 
-async function closeIssue(issueId) {
-    const queryStr = `
-        closeIssue(input: {stateReason: COMPLETED, issueId: ${issueId}}) {
-            issue {
-                id
-                state
-                stateReason
-            }
-        }
-    `;
-
-    return await octokit.graphql(queryStr, params);
+async function closeEntry(entryId) {
+    const queryStr = queryString(CLOSE_ENTRY);
+    return await octokit.graphql(queryStr, { entryId });
 }
 
 async function runCloseAllOutdatedIssues(identifier, delimiter) {
@@ -182,6 +150,6 @@ module.exports = {
     runFetchQuery,
     runPageInfoQuery,
     runNextCloseFetchQuery,
-    closeIssue,
+    closeEntry,
     runCloseAllOutdatedIssues
 };
