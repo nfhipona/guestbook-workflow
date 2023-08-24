@@ -81,14 +81,11 @@ Make sure to define or and create label with `guestbook_entry` in respect to `en
 
 ## Guestbook
 <!--START_SECTION:guestbook-section-->
-<a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a>
+<a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a> <a href="https://github.com/nfhipona"><img src="https://avatars.githubusercontent.com/u/8805997?u=8b6d5144a4b1cf8a953b79fd38abffb7485389ed&v=4" height="30"/></a>
 
-* **[nfhipona](https://github.com/nfhipona) *wrote on 8/24/2023*:**  v2.0.0 No Label Entry: Test entry with no label attached.
-* **[nfhipona](https://github.com/nfhipona) *wrote on 8/2/2023*:**  Cleaned Config: Clean up settings, added retry fetch and updated documentation and usage in readme file!
-* **[nfhipona](https://github.com/nfhipona) *wrote on 7/18/2023*:**  Formatted Body: Check it out. This project is under [MIT License](https://github.com/nfhipona/guestbook-workflow/blob/main/LICENSE)
-* **[nfhipona](https://github.com/nfhipona) *wrote on 7/18/2023*:**  Added additional flags and formatting: Added auto close all outdated issues or comments past max display count! [check me here]([github.com/marketplace/actions/guestbook-workflow](https://github.com/marketplace/actions/guestbook-workflow))!
-* **[nfhipona](https://github.com/nfhipona) *wrote on 7/18/2023*:**  With body formatting: This guestbook workflow was inspired by [readme-guestbook](https://github.com/muety/readme-guestbook)!
-* **[nfhipona](https://github.com/nfhipona) *wrote on 7/16/2023*:** Another comment from random pips
+* **[nfhipona](https://github.com/nfhipona) *wrote on 8/24/2023*:** v2.0.2 Entry: Testing with label flag
+* **[nfhipona](https://github.com/nfhipona) *wrote on 8/24/2023*:** v2.0.0 Features: Added new feature set and flags!
+* **[nfhipona](https://github.com/nfhipona) *wrote on 8/24/2023*:** Entry with Label: Use label instead of querying from title.
 
 Do you like my project or just want to say hi? Feel free to [post something](https://github.com/nfhipona/guestbook-workflow/issues/new?title=GUEST_BOOK_ENTRY) to ***[my](https://github.com/nfhipona)*** guestbook!
 <!--END_SECTION:guestbook-section-->
