@@ -1,6 +1,6 @@
 {
   "name": "guestbook-workflow",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Allows you to use your repo issues as your guest book entries and show it on your github profile or project readme",
   "main": "dist/index.js",
   "scripts": {
