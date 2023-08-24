@@ -1,34 +1,25 @@
 // https://docs.github.com/en/graphql/guides/forming-calls-with-graphql
 // https://docs.github.com/en/graphql/overview/explorer
 
-const {
-    ENTRY_LABELS,
-    INCLUDE_BODY_FORMATTING
-} = require('./constants');
-
 export const LATEST_ENTRIES = "LATEST_ENTRIES";
 export const PAGE_INFO = "PAGE_INFO";
 export const NEXT_ENTRIES = "NEXT_ENTRIES";
 export const CLOSE_ENTRY = "CLOSE_ENTRY";
 
-export function cleanedLabels() {
-    return ENTRY_LABELS.split(',')
+export function cleanedLabels(labelStr) {
+    const trimExp = new RegExp(/^\s+|\s+$/, 'gm');
+    return labelStr.split(',')
         .filter(label => label.length > 0) // remove empty or blank label
         .map(label => { // trim white spaces
-            const trimExp = new RegExp(`^\s+|\s+$`, 'gm');
             const cleaned = label.replaceAll(trimExp, '');
             return cleaned;
         });
 }
 
-export function queryString(forType) {
-    const useLabels = cleanedLabels().length > 0;
-
+export function queryString(forType, hasLabel = false, bodyFormat = 'body') {
     switch (forType) {
         case LATEST_ENTRIES:
-            const format = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
-
-            return useLabels ? `
+            return hasLabel ? `
                 query getLatestEntries(
                     $owner: String!, 
                     $repo: String!, 
@@ -46,7 +37,7 @@ export function queryString(forType) {
                                     id
                                     title
                                     url
-                                    ${format}
+                                    ${bodyFormat}
                                     createdAt
                                     author {
                                         login
@@ -84,7 +75,7 @@ export function queryString(forType) {
                                     id
                                     title
                                     url
-                                    ${format}
+                                    ${bodyFormat}
                                     createdAt
                                     author {
                                         login
@@ -98,7 +89,7 @@ export function queryString(forType) {
             `;
 
         case PAGE_INFO:
-            return useLabels ? `
+            return hasLabel ? `
                 query getPageInfo(
                     $owner: String!, 
                     $repo: String!, 
@@ -140,7 +131,7 @@ export function queryString(forType) {
             `;
 
         case NEXT_ENTRIES:
-            return useLabels ? `
+            return hasLabel ? `
                 query getNextEntries(
                     $owner: String!, 
                     $repo: String!, 

@@ -41,7 +41,7 @@ export class Issue {
 
     getTitle(identifier, delimiter) {
         const titleExp = new RegExp(`^([${identifier}]+.+[${delimiter}])`, 'g');
-        const trimExp = new RegExp(`^\s+|\s+$`, 'gm');
+        const trimExp = new RegExp(/^\s+|\s+$/, 'gm');
         const titleContent = this.title.replace(titleExp, '');
         const cleaned = titleContent.replaceAll(trimExp, '');
         return cleaned === identifier ? '' : cleaned;
