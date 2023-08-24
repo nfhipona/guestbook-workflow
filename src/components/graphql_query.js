@@ -158,11 +158,13 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
 
 async function closeIssue(issueId) {
     const queryStr = `
-        closeIssue(input: {stateReason: COMPLETED, issueId: ${issueId}}) {
-            issue {
-                id
-                state
-                stateReason
+        mutation {
+            closeIssue(input: {stateReason: COMPLETED, issueId: ${issueId}}) {
+                issue {
+                    id
+                    state
+                    stateReason
+                }
             }
         }
     `;
