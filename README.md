@@ -13,6 +13,7 @@ Allows you to use your repo issues as your guestbook entries and show it on your
 | `retry_enabled` | `true` | No | Sets retry fetch flag enabled or disabled. |
 | `max_retry_count` | `3` | No | Maximum number of times to retry the fetch operation if it fails. |
 | `retry_wait_time` | `3` | No | Time to wait before each retry operation in seconds. |
+| `entry_labels` | `guestbook_entry` | No | Add label to guestbook entries for additional accuracy. Will support max of 5 labels. eg. guestbook_entry, guestbook_entry_2, guestbook_entry_n, ... If left empty, option filter is disregarded |
 | `entry_identifier` | `GUEST_BOOK_ENTRY` | No | Guestbook title prefix identifier. |
 | `entry_identifier_delimiter` | `:` | No | Guestbook title prefix identifier delimiter to separate entry title. eg. `GUEST_BOOK_ENTRY: USER_CONTENT_TITLE`. |
 | `comment_template` | `* **[$username]($profile) *wrote on $date*:** $title: $content` | No | Template format to display guests comments. variables: `$username`, `$profile`, `$date`, `$title`, `$content`. |

@@ -99,6 +99,7 @@ async function runPageInfoQuery() {
 
 async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const labels = cleanedLabels();
+    const hasLabel = labels.length > 0;
     const queryStr = queryString(NEXT_ENTRIES);
     const params = {
         owner,
@@ -118,7 +119,7 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
                 id, title, createdAt
             );
         })
-    const comments = issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+    const comments = hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
 
     for (const comment of comments) {
         const result = await closeEntry(comment.id);

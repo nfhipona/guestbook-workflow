@@ -22,7 +22,7 @@ export function cleanedLabels() {
 }
 
 export function queryString(forType) {
-    const useLabels = ENTRY_LABELS.length > 0;
+    const useLabels = cleanedLabels().length > 0;
 
     switch (forType) {
         case LATEST_ENTRIES:
