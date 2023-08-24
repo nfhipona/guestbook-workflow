@@ -12,10 +12,10 @@ export const NEXT_ENTRIES = "NEXT_ENTRIES";
 export const CLOSE_ENTRY = "CLOSE_ENTRY";
 
 export function cleanedLabels() {
+    const trimExp = new RegExp(/^\s+|\s+$/, 'gm');
     return ENTRY_LABELS.split(',')
         .filter(label => label.length > 0) // remove empty or blank label
         .map(label => { // trim white spaces
-            const trimExp = new RegExp(`^\s+|\s+$`, 'gm');
             const cleaned = label.replaceAll(trimExp, '');
             return cleaned;
         });
