@@ -7,6 +7,8 @@ const {
     RETRY_ENABLED,
     MAX_RETRY_COUNT,
     RETRY_WAIT_TIME,
+    ENTRY_LABELS,
+
     octokit,
     owner,
     source_repo
@@ -27,8 +29,10 @@ const {
 } = require('./issue');
 
 async function runFetchQuery(identifier) {
-    const labels = cleanedLabels();
-    const queryStr = queryString(LATEST_ENTRIES);
+    const labels = cleanedLabels(ENTRY_LABELS);
+    const hasLabel = labels.length > 0;
+    const bodyFormat = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
+    const queryStr = queryString(LATEST_ENTRIES, hasLabel, bodyFormat);
     const params = {
         owner,
         repo: source_repo,
@@ -52,7 +56,6 @@ async function runFetchQuery(identifier) {
         issues = await performFetchQuery(queryStr, params);
     }
 
-    const hasLabel = labels.length > 0;
     return hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(identifier));;
 }
 
@@ -85,8 +88,9 @@ async function performFetchQuery(queryStr, params) {
 }
 
 async function runPageInfoQuery() {
-    const labels = cleanedLabels();
-    const queryStr = queryString(PAGE_INFO);
+    const labels = cleanedLabels(ENTRY_LABELS);
+    const hasLabel = labels.length > 0;
+    const queryStr = queryString(PAGE_INFO, hasLabel);
     const params = {
         owner,
         repo: source_repo,
@@ -99,9 +103,9 @@ async function runPageInfoQuery() {
 }
 
 async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
-    const labels = cleanedLabels();
+    const labels = cleanedLabels(ENTRY_LABELS);
     const hasLabel = labels.length > 0;
-    const queryStr = queryString(NEXT_ENTRIES);
+    const queryStr = queryString(NEXT_ENTRIES, hasLabel);
     const params = {
         owner,
         repo: source_repo,
