@@ -22,9 +22,9 @@ const {
 } = require('./queries');
 const {
     Issue,
-    CloseIssue
+    OldIssue,
+    IssueLabel
 } = require('./issue');
-const { IssueLabel } = require('./issue.label');
 
 async function runFetchQuery() {
     const labels = cleanedLabels();
@@ -115,7 +115,7 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const issues = edges
         .map(issue => {
             const { id, title, createdAt } = issue.node;
-            return new CloseIssue(
+            return new OldIssue(
                 id, title, createdAt
             );
         })
