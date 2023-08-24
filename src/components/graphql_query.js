@@ -16,7 +16,7 @@ const { Issue, CloseIssue } = require('./issue');
 async function runFetchQuery() {
     const format = INCLUDE_BODY_FORMATTING ? 'body' : 'bodyText';
     const queryStr = `
-        query latestIssues($owner: String!, $repo: String!, $num: Int) {
+        query getLatestEntries($owner: String!, $repo: String!, $num: Int) {
             repository(owner: $owner, name: $repo) {
                 issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}) {
                     edges {
@@ -83,7 +83,7 @@ async function performFetchQuery(queryStr, params) {
 
 async function runPageInfoQuery() {
     const queryStr = `
-        query latestIssues($owner: String!, $repo: String!, $num: Int) {
+        query getPageInfo($owner: String!, $repo: String!, $num: Int) {
             repository(owner: $owner, name: $repo) {
                 issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}) {
                     pageInfo {
@@ -107,9 +107,9 @@ async function runPageInfoQuery() {
 
 async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const queryStr = `
-        query nextIssues($owner: String!, $repo: String!, $num: Int) {
+        query getNextEntries($owner: String!, $repo: String!, $num: Int, $cursur: String!) {
             repository(owner: $owner, name: $repo) {
-                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: ${fetchCursor}) {
+                issues(first: $num, orderBy: {field: CREATED_AT, direction: DESC}, filterBy: {states: [OPEN]}, after: $cursur) {
                     edges {
                         node {
                             id
@@ -129,7 +129,8 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const params = {
         owner: owner,
         repo: repo,
-        num: Number(MAX_DISPLAY_COUNT) || 0
+        num: Number(MAX_DISPLAY_COUNT) || 0,
+        cursur: fetchCursor
     };
 
     const { repository } = await octokit.graphql(queryStr, params);
@@ -145,7 +146,7 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     const comments = issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
 
     for (const comment of comments) {
-        const result = await closeIssue(comment.id);
+        const result = await closeEntry(comment.id);
         const { state, stateReason } = result;
         console.log(`id: ${comment.id}\ntitle: ${comment.title}\ncreatedAt: ${comment.createdAt}\nstate: ${state}\nstateReason: ${stateReason}`);
     }
@@ -156,10 +157,10 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
     }
 }
 
-async function closeIssue(issueId) {
+async function closeEntry(entryId) {
     const queryStr = `
-        mutation {
-            closeIssue(input: {stateReason: COMPLETED, issueId: ${issueId}}) {
+        mutation closeEntry($entryId: ID!) {
+            closeIssue(input: {stateReason: COMPLETED, issueId: $issueId}) {
                 issue {
                     id
                     state
@@ -169,7 +170,7 @@ async function closeIssue(issueId) {
         }
     `;
 
-    return await octokit.graphql(queryStr, params);
+    return await octokit.graphql(queryStr, { entryId });
 }
 
 async function runCloseAllOutdatedIssues(identifier, delimiter) {
@@ -184,6 +185,6 @@ module.exports = {
     runFetchQuery,
     runPageInfoQuery,
     runNextCloseFetchQuery,
-    closeIssue,
+    closeEntry,
     runCloseAllOutdatedIssues
 };
