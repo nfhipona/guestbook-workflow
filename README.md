@@ -23,6 +23,7 @@ Allows you to use your repo issues as your guestbook entries and show it on your
 | `section_identifier` | `guestbook` | No | The section identifier in readme file. |
 | `include_body_formatting` | `true` | No | Flag to tell the parser to include original formatting on the comment body. |
 | `close_outdated_issues` | `false` | No | Close all outdated issues or comments past the `max_display_count` parameter. |
+| `remote_repo` | `current` | No | Use another repo to pull data from that lives in your account. Useful if you want to host and pull entries from different source repo. |
 
 
 ## Usage
