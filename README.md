@@ -71,9 +71,13 @@ jobs:
           section_identifier: 'guestbook-section'
           include_body_formatting: true # this already defaults to true -- just for demo
           close_outdated_issues: true
+          entry_labels: 'guestbook_entry'
 
 ```
 
+**IMPORTANT**
+
+Make sure to define or and create label with `guestbook_entry` in respect to `entry_labels` flag and attach it to the created issues or entries!
 
 ## Guestbook
 <!--START_SECTION:guestbook-section-->
