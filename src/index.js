@@ -1,9 +1,3 @@
-const { ReadmeBox } = require('readme-box')
-const {
-    runFetchQuery,
-    runCloseAllOutdatedIssues
-} = require('./components/graphql_query');
-
 const {
     GITHUB_TOKEN,
     TARGET_BRANCH,
@@ -20,6 +14,13 @@ const {
     repo
 } = require('./components/constants');
 
+const { ReadmeBox } = require('readme-box')
+const {
+    runFetchQuery,
+    runCloseAllOutdatedIssues
+} = require('./components/graphql_query');
+const { cleanedLabels } = require('./components/queries');
+
 async function updateReadme(content) {
     return await ReadmeBox.updateSection(content, {
         owner,
@@ -31,8 +32,7 @@ async function updateReadme(content) {
     });
 }
 
-function constructGuestbook(issues = []) {
-    const comments = issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+function constructGuestbook(comments = []) {
     if (comments.length === 0) {
         return EMPTY_TEMPLATE
             .replaceAll('$username', owner)
@@ -59,7 +59,7 @@ function constructGuestbook(issues = []) {
 }
 
 async function runWorkflow() {
-    const issues = await runFetchQuery();
+    const issues = await runFetchQuery(ENTRY_IDENTIFIER);
     const guestbookContents = constructGuestbook(issues);
     await updateReadme(guestbookContents);
 
