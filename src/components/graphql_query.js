@@ -26,7 +26,7 @@ const {
     IssueLabel
 } = require('./issue');
 
-async function runFetchQuery() {
+async function runFetchQuery(identifier) {
     const labels = cleanedLabels();
     const queryStr = queryString(LATEST_ENTRIES);
     const params = {
@@ -52,7 +52,8 @@ async function runFetchQuery() {
         issues = await performFetchQuery(queryStr, params);
     }
 
-    return issues;
+    const hasLabel = labels.length > 0;
+    return hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(identifier));;
 }
 
 async function sleep(ms) {
@@ -119,7 +120,7 @@ async function runNextCloseFetchQuery(identifier, delimiter, fetchCursor) {
                 id, title, createdAt
             );
         })
-    const comments = hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(ENTRY_IDENTIFIER));
+    const comments = hasLabel ? issues : issues.filter(issue => issue.isGuestEntry(identifier));
 
     for (const comment of comments) {
         const result = await closeEntry(comment.id);
