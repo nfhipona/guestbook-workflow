@@ -1,11 +1,13 @@
-class Issue {
-    constructor(title, content, createdAt, author, avatarUrl) {
+export class Issue {
+    constructor(id, title, content, createdAt, author, avatarUrl, labels = []) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = new Date(createdAt).toLocaleDateString('en-US');
         this.author = author;
         this.avatarUrl = avatarUrl;
         this.profile = `https://github.com/${author}`;
+        this.labels = labels;
     }
 
     toEntryString(identifier, delimiter, template, no_title_template, max_character_count = 0) {
@@ -46,7 +48,7 @@ class Issue {
     }
 }
 
-class CloseIssue {
+export class CloseIssue {
     constructor(id, title, createdAt) {
         this.id = id;
         this.title = title;
@@ -65,8 +67,3 @@ class CloseIssue {
         return cleaned === identifier ? '' : cleaned;
     }
 }
-
-module.exports = {
-    Issue,
-    CloseIssue
-};

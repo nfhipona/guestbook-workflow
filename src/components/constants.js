@@ -7,6 +7,7 @@ const MAX_CHARACTER_COUNT = core.getInput('max_character_count');
 const RETRY_ENABLED = core.getInput('retry_enabled');
 const MAX_RETRY_COUNT = core.getInput('max_retry_count');
 const RETRY_WAIT_TIME = core.getInput('retry_wait_time');
+const ENTRY_LABELS = core.getInput('entry_labels');
 const ENTRY_IDENTIFIER = core.getInput('entry_identifier');
 const ENTRY_IDENTIFIER_DELIMITER = core.getInput('entry_identifier_delimiter');
 const COMMENT_TEMPLATE = core.getInput('comment_template');
@@ -30,6 +31,7 @@ module.exports = {
     RETRY_ENABLED,
     MAX_RETRY_COUNT,
     RETRY_WAIT_TIME,
+    ENTRY_LABELS,
     ENTRY_IDENTIFIER,
     ENTRY_IDENTIFIER_DELIMITER,
     COMMENT_TEMPLATE,

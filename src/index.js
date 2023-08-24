@@ -1,5 +1,8 @@
 const { ReadmeBox } = require('readme-box')
-const { runFetchQuery, runCloseAllOutdatedIssues } = require('./components/graphql_query');
+const {
+    runFetchQuery,
+    runCloseAllOutdatedIssues
+} = require('./components/graphql_query');
 
 const {
     GITHUB_TOKEN,
