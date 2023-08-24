@@ -67,6 +67,10 @@ inputs:
     description: 'Close all outdated issues or comments past the `max_display_count` parameter.'
     default: false
     required: false
+  remote_repo:
+    description: 'Use another repo to pull data from that lives in your account.'
+    default: ''
+    required: false
 
 runs:
   using: node16

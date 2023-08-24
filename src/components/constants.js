@@ -17,9 +17,11 @@ const TARGET_BRANCH = core.getInput('target_branch');
 const SECTION_IDENTIFIER = core.getInput('section_identifier');
 const INCLUDE_BODY_FORMATTING = core.getInput('include_body_formatting');
 const CLOSE_OUDATED_ISSUES = core.getInput('close_outdated_issues');
+const REMOTE_REPO = core.getInput('remote_repo');
 
 const octokit = github.getOctokit(GITHUB_TOKEN);
 const { owner, repo } = github.context.repo;
+const source_repo = REMOTE_REPO.length > 0 ? REMOTE_REPO : repo;
 
 module.exports = {
     GITHUB_TOKEN,
@@ -40,5 +42,6 @@ module.exports = {
     CLOSE_OUDATED_ISSUES,
     octokit,
     owner,
-    repo
+    repo,
+    source_repo
 };
